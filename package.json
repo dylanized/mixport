@@ -1,0 +1,27 @@
+{
+  "name": "mixport",
+  "version": "1.0.0",
+  "description": "A tool for exporting data from Mixpanel",
+  "main": "mixport.js",
+  "dependencies": {
+    "commander": "^2.8.1",
+    "email-validator": "^1.0.3",
+    "fs": "0.0.2",
+    "json2csv": "^2.12.0",
+    "jsonfile": "^2.2.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Mixpanel",
+    "export"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dylanized/mixport"
+  },
+  "author": "Dylan Hassinger",
+  "license": "ISC"
+}
