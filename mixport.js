@@ -13,6 +13,7 @@
 	program
 	  .version('0.0.1')
 	  .option('-j, --json', 'JSON export')
+	  .option('-f, --filename <name>', 'Override filename')
 	
 	program
 	  .command('*')
@@ -40,7 +41,6 @@
 		
 			var name = email.substr(0, email.search("@"));
 			
-			// dummy results data
 			var results = [
 			  {
 			    "car": "Audi",
@@ -63,6 +63,9 @@
 	
 	function save_file(name, results) {
 	
+		// override name
+		if (program.filename) name = program.filename;
+		
 		// grab fields
 		var fields = Object.keys(results[0]);
 		
