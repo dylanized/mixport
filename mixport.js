@@ -25,7 +25,7 @@
 	  .command('*')
 	  .action(function(env){
 	  	// validate argument
-	  	if (validator.validate(env)) profile_export(env);
+	  	if (validator.validate(env)) export_profiles_by_email(env);
 	    else {
 	    	console.log ("Please supply a valid email address!");
 			program.outputHelp();	    	
@@ -36,10 +36,20 @@
 
 // export
 
-	function profile_export(email) {
+	function export_profiles_by_email(email) {
 	
-		get_profiles(email, function(profiles) {
-		
+		get_profiles("$email", email, function(results) {
+								 	
+	 		// build flat profile list
+	 	
+	 		var profiles = [];
+	 	
+		 	results.forEach(function(e) {
+		 		var profile = e["$properties"];
+		 		profile["$distinct_id"] = e["$distinct_id"];
+			 	profiles.push(profile);				 		
+		 	});				 	
+				 					
 			console.log(profiles);
 		
 			easy_export(email, profiles);
@@ -47,35 +57,20 @@
 		});	
 		
 	}
-	
-	function get_profiles(email, cb) {
-
-		console.log("Grabbing profile data for " + email);
 		
-		var query = 'properties["$email"]=="' + email + '"';
+	function get_profiles(prop_name, prop_val, cb) {
+	
+		console.log("Grabbing profile data where " + prop_name + " = " + prop_val);
+		
+		var query = 'properties["' + prop_name + '"]=="' + prop_val + '"';
 		
 		mixpanelist.get('/engage', { where: query }, function (err, res) {
 		
 			if (!err) {
-
+	
 				var results = res.results;
 			 	
-			 	if (results.length > 0) {
-			 	
-			 		// build flat profile list
-			 	
-			 		var profiles = [];
-			 	
-				 	results.forEach(function(e) {
-				 		var profile = e["$properties"];
-				 		profile["$distinct_id"] = e["$distinct_id"];
-					 	profiles.push(profile);				 		
-				 	});				 	
-				 	
-				 	cb(profiles);
-				 	
-				}						
-
+			 	if (results.length > 0) cb(results);
 				else console.log("No profiles found!");
 			
 			}
@@ -83,8 +78,8 @@
 			else console.log(err);
 		  
 		});	
-		
-	}
+	
+	}	
 	
 	function easy_export(name, results) {
 	
