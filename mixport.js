@@ -1,21 +1,27 @@
 #!/usr/bin/env node
 
-// includes
+// script setup
 	
 	var program = require('commander'),
 		validator = require("email-validator"),
 		fs = require('fs'),
 		jsonfile = require('jsonfile'),
 		json2csv = require('json2csv'),
-		path = require('path');		
+		path = require('path'),
+		Mixpanelist = require('mixpanelist');
+		
+	var mixpanelist = new Mixpanelist({
+	  key: 'cfa6e5fb9f5e5b88c955d2a99fb9eb3b',
+	  secret: 'fa6cd1e6c56fdeca6868affd3367aedd',
+	});			
 	
 // commander setup
 
 	program
 	  .version('0.0.1')
 	  .option('-j, --json', 'JSON export')
-	  .option('-n, --name <filename>', 'Override filename')
-	  .option('-f, --folder <folder>', 'Output folder', 'export')
+	  .option('-f, --filename <name>', 'Override filename')
+	  .option('-e, --export <export>', 'Export folder', 'export')
 	
 	program
 	  .command('*')
@@ -31,19 +37,33 @@
 
 	function mixpanel_export(email) {
 	
+		var name = email.substr(0, email.search("@"));
+	
 		// grab profile data
 		
-			console.log("grabbing profile data for " + email);
+			console.log("Grabbing profile data for " + email);
+			
+			mixpanelist.get('/events/top', { type: 'general' }, function (err, results) {
+			 
+			  if (err) {
+			    throw err;
+			  }
+			 
+			  var events = results.events;
+			  
+			  console.log(events);
+			  
+			  save_file(name, events);
+			  
+			});			
 		
 		// grab all events
 		
-			console.log("grabbing event data for " + email);
+			//console.log("grabbing event data for " + email);
 		
 		// save file
 		
-			var name = email.substr(0, email.search("@"));
-			
-			var results = [
+			/*var results = [
 			  {
 			    "car": "Audi",
 			    "price": 40000,
@@ -57,32 +77,32 @@
 			    "price": 60000,
 			    "color": "green"
 			  }
-			];			
+			];*/		
 		
-			save_file(name, results);
-	
 	}
 	
 	function save_file(name, results) {
 	
 		// build name and path
-		if (program.name) name = program.name;
-		
 		var ext;
 		if (program.json) ext = ".json";
 		else ext = ".csv";
 		
-		var filepath = path.join(program.folder, name + ext);
+		var filename;
+		if (program.filename) filename = program.filename + ext;
+		else filename = name + ext;
 		
-		// grab fields
-		var fields = Object.keys(results[0]);
-		
-		// create folder if it doesn't exist
-		if (!fs.existsSync(program.folder)) fs.mkdirSync(program.folder);
+		var filepath = program.export + "/" + filename;	
+				
+		// create export folder if it doesn't exist
+		if (!fs.existsSync(program.export)) fs.mkdirSync(program.export);
 		
 		// save file
 		if (program.json) exportJSON(filepath, results);
-		else exportCSV(filepath, results, fields);
+		else {
+			var fields = Object.keys(results[0]);			
+			exportCSV(filepath, results, fields);
+		}
 	
 	}
 	
@@ -104,4 +124,8 @@
 		  });
 		});				
 		
-	}	
+	}
+ 
+
+ 
+	
