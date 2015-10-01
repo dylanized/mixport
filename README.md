@@ -26,7 +26,9 @@ will export a file at: newfolder/newfilename.json
 
 ## Getting Started
 
-Fill out the fields in config.sample.json, change the name to config.json, and you can begin using it as shown above.
+- Open config.sample.json, fill out the fields
+- Change filename name to config.json
+- Now you can begin using it as shown above.
 
 
 
