@@ -26,7 +26,10 @@
 	  .action(function(env){
 	  	// validate argument
 	  	if (validator.validate(env)) profile_export(env);
-	    else console.log ("Please supply a valid email address");
+	    else {
+	    	console.log ("Please supply a valid email address!");
+			program.outputHelp();	    	
+	    }
 	});
 	
 	program.parse(process.argv);
