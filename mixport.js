@@ -10,8 +10,8 @@
 		path = require('path'),
 		Mixpanelist = require('mixpanelist');
 		
-	var mixpanelist = new Mixpanelist({
-	});			
+	var config = require('./config.json');	
+	var mixpanelist = new Mixpanelist(config);			
 	
 // commander setup
 
