@@ -6,14 +6,16 @@
 		validator = require("email-validator"),
 		fs = require('fs'),
 		jsonfile = require('jsonfile'),
-		json2csv = require('json2csv');		
+		json2csv = require('json2csv'),
+		path = require('path');		
 	
 // commander setup
 
 	program
 	  .version('0.0.1')
 	  .option('-j, --json', 'JSON export')
-	  .option('-f, --filename <name>', 'Override filename')
+	  .option('-n, --name <filename>', 'Override filename')
+	  .option('-f, --folder <folder>', 'Output folder', 'export')
 	
 	program
 	  .command('*')
@@ -63,15 +65,24 @@
 	
 	function save_file(name, results) {
 	
-		// override name
-		if (program.filename) name = program.filename;
+		// build name and path
+		if (program.name) name = program.name;
+		
+		var ext;
+		if (program.json) ext = ".json";
+		else ext = ".csv";
+		
+		var filepath = path.join(program.folder, name + ext);
 		
 		// grab fields
 		var fields = Object.keys(results[0]);
 		
+		// create folder if it doesn't exist
+		if (!fs.existsSync(program.folder)) fs.mkdirSync(program.folder);
+		
 		// save file
-		if (program.json) exportJSON(name + ".json", results);
-		else exportCSV(name + ".csv", results, fields);
+		if (program.json) exportJSON(filepath, results);
+		else exportCSV(filepath, results, fields);
 	
 	}
 	
