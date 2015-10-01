@@ -18,6 +18,12 @@ By default, the output file will be at: exports/someperson.csv
 
 `-e` change the exports folder
 
+Example: 
+
+`node mixport.js someperson@somedomain.com -j -f newfilename -e newfolder`
+
+
+
 
 
 
