@@ -11,8 +11,6 @@
 		Mixpanelist = require('mixpanelist');
 		
 	var mixpanelist = new Mixpanelist({
-	  key: 'cfa6e5fb9f5e5b88c955d2a99fb9eb3b',
-	  secret: 'fa6cd1e6c56fdeca6868affd3367aedd',
 	});			
 	
 // commander setup
