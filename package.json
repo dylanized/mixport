@@ -9,7 +9,8 @@
     "fs": "0.0.2",
     "json2csv": "^2.12.0",
     "jsonfile": "^2.2.2",
-    "mixpanelist": "^1.1.2"
+    "mixpanelist": "^1.1.2",
+    "seq": "^0.3.5"
   },
   "devDependencies": {},
   "scripts": {

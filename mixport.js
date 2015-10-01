@@ -35,29 +35,58 @@
 
 	function mixpanel_export(email) {
 	
+		// setup
+		
 		var name = email.substr(0, email.search("@"));
-	
-		// grab profile data
+		var events;
+		var profile;
 		
-			console.log("Grabbing profile data for " + email);
-			
-			mixpanelist.get('/events/top', { type: 'general' }, function (err, results) {
-			 
-			  if (err) {
-			    throw err;
-			  }
-			 
-			  var events = results.events;
-			  
-			  console.log(events);
-			  
-			  save_file(name, events);
-			  
-			});			
+		var Seq = require('seq');
+		Seq()
 		
-		// grab all events
+		// get events data
 		
-			//console.log("grabbing event data for " + email);
+		    .seq(function () {
+		    
+		    	var self = this;		        
+				console.log("Grabbing event data for " + email);
+		        
+				mixpanelist.get('/events/top', { type: 'general' }, function (err, results) {
+				 
+					events = results.events;					
+					console.log(events);
+					
+					self(err);
+				  
+				});			        
+		        
+		    })
+		    
+		// get profile data		    
+		    
+		    .seq(function () {
+		    
+		    	var self = this;
+		    
+				console.log("Grabbing profile data for " + email);
+				
+		    	//profile = ;
+		    
+		    	//console.log(profile);
+		    	
+		    	self(null);
+		        
+		    })
+		 
+		// save file    
+		    
+		    .seq(function () {
+		    
+		        save_file(name, events);
+		    
+		    })		    
+
+		;		
 		
 		// save file
 		
