@@ -1,21 +1,22 @@
-# mixport
+# Mixport
+
 A command line tool for exporting data from Mixpanel. (work in progress)
 
-= Basic Use
+## Basic Use
 
 Export events data in CSV format:
 
-node mixport.js someperson@somedomain.com
+`node mixport.js someperson@somedomain.com`
 
 By default, the output file will be at: exports/someperson.csv
 
-= Additional Options
+## Additional Options
 
--j json format
+`-j` json format
 
--f change the filename
+`-f` change the filename
 
--e change the exports folder
+`-e` change the exports folder
 
 
 
