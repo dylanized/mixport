@@ -22,6 +22,9 @@ Example:
 
 `node mixport.js someperson@somedomain.com -j -f newfilename -e newfolder`
 
+will export a file at: newfolder/newfilename.json
+
+
 
 
 
