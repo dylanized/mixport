@@ -37,6 +37,8 @@
 	
 		get_profiles(email, function(profiles) {
 		
+			console.log(profiles);
+		
 			easy_export(email, profiles);
 		
 		});	
