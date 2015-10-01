@@ -25,7 +25,7 @@
 	  .command('*')
 	  .action(function(env){
 	  	// validate argument
-	  	if (validator.validate(env)) mixpanel_export(env);
+	  	if (validator.validate(env)) profile_export(env);
 	    else console.log ("Please supply a valid email address");
 	});
 	
@@ -33,82 +33,55 @@
 
 // export
 
-	function mixpanel_export(email) {
+	function profile_export(email) {
 	
-		// setup
+		get_profiles(email, function(profiles) {
 		
-		var name = email.substr(0, email.search("@"));
-		var events;
-		var profile;
+			easy_export(email, profiles);
 		
-		var Seq = require('seq');
-		Seq()
-		
-		// get events data
-		
-		    .seq(function () {
-		    
-		    	var self = this;		        
-				console.log("Grabbing event data for " + email);
-		        
-				mixpanelist.get('/events/top', { type: 'general' }, function (err, results) {
-				 
-					events = results.events;					
-					console.log(events);
-					
-					self(err);
-				  
-				});			        
-		        
-		    })
-		    
-		// get profile data		    
-		    
-		    .seq(function () {
-		    
-		    	var self = this;
-		    
-				console.log("Grabbing profile data for " + email);
-				
-		    	//profile = ;
-		    
-		    	//console.log(profile);
-		    	
-		    	self(null);
-		        
-		    })
-		 
-		// save file    
-		    
-		    .seq(function () {
-		    
-		        save_file(name, events);
-		    
-		    })		    
-
-		;		
-		
-		// save file
-		
-			/*var results = [
-			  {
-			    "car": "Audi",
-			    "price": 40000,
-			    "color": "blue"
-			  }, {
-			    "car": "BMW",
-			    "price": 35000,
-			    "color": "black"
-			  }, {
-			    "car": "Porsche",
-			    "price": 60000,
-			    "color": "green"
-			  }
-			];*/		
+		});	
 		
 	}
 	
-	function save_file(name, results) {
+	function get_profiles(email, cb) {
+
+		console.log("Grabbing profile data for " + email);
+		
+		var query = 'properties["$email"]=="' + email + '"';
+		
+		mixpanelist.get('/engage', { where: query }, function (err, res) {
+		
+			if (!err) {
+
+				var results = res.results;
+			 	
+			 	if (results.length > 0) {
+			 	
+			 		// build flat profile list
+			 	
+			 		var profiles = [];
+			 	
+				 	results.forEach(function(e) {
+				 		var profile = e["$properties"];
+				 		profile["$distinct_id"] = e["$distinct_id"];
+					 	profiles.push(profile);				 		
+				 	});				 	
+				 	
+				 	cb(profiles);
+				 	
+				}						
+
+				else console.log("No profiles found!");
+			
+			}
+			
+			else console.log(err);
+		  
+		});	
+		
+	}
+	
+	function easy_export(name, results) {
 	
 		// build name and path
 		var ext;
@@ -136,6 +109,8 @@
 	function exportJSON(filename, results) {
 	
 		console.log("Exporting " + filename);
+		
+		console.log(results);
 		
 		jsonfile.writeFileSync(filename, results);
 				

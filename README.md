@@ -1,6 +1,6 @@
 # Mixport
 
-A command line tool for exporting data from Mixpanel. (work in progress)
+A command line tool for exporting Mixpanel profile data
 
 ## Basic Use
 
@@ -23,6 +23,10 @@ Example:
 `node mixport.js someperson@somedomain.com -j -f newfilename -e newfolder`
 
 will export a file at: newfolder/newfilename.json
+
+## Getting Started
+
+Fill out the fields in config.sample.json, change the name to config.json, and you can begin using it as shown above.
 
 
 
