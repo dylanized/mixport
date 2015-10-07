@@ -2,7 +2,7 @@
 
 A command line tool for exporting Mixpanel profile data.
 
-You can filter by an email address, a state abbreviation, or specify another property.
+You can filter by an email address, a state abbreviation, a zip code, or specify another property.
 
 ## Basic Use
 
@@ -28,9 +28,13 @@ More Examples:
 
 exports: states/MO.csv
 
-`node mixport.js 63118 -p zip -j`
+`node mixport.js 63118 -j`
 
 exports: exports/63118.json
+
+`node mixport.js Chicago -p city`
+
+exports: exports/chicago.csv
 
 ## Getting Started
 
