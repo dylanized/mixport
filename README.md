@@ -28,13 +28,9 @@ More Examples:
 
 exports: states/MO.csv
 
-`node mixport.js 63118 -j`
+`node mixport.js Chicago -p City -j`
 
-exports: exports/63118.json
-
-`node mixport.js Chicago -p city`
-
-exports: exports/chicago.csv
+exports: exports/chicago.json
 
 ## Getting Started
 

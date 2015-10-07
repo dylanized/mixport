@@ -33,9 +33,6 @@
 	  	
 	  	// if state
 	  	else if (is_state(arg)) export_profiles("$state", arg.toUpperCase());
-
-	  	// if zip
-	  	else if (is_zip(arg)) export_profiles("$zip", arg);
 	  		  	
 	  	// prop mode
 	    else if (program.prop) export_profiles(program.prop, arg);
@@ -57,12 +54,7 @@
 	    	var state = arg.toUpperCase();
 	    	if (state in states) return true;
 	    	else return false;
-	    }	
-	    
-	    function is_zip(arg) {
-	    	// if is 5 digit number
-	    	// else return false;
-	    }	    
+	    }    
 	    
 	});
 	
