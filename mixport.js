@@ -3,14 +3,16 @@
 // script setup
 	
 	var program = require('commander'),
-		validator = require("email-validator"),
+		email_validator = require("email-validator"),
 		fs = require('fs'),
 		jsonfile = require('jsonfile'),
 		json2csv = require('json2csv'),
 		path = require('path'),
 		Mixpanelist = require('mixpanelist');
 		
-	var config = require('./config.json');	
+	var config = require('./config.json'),	
+		states = require('./states.json');
+		
 	var mixpanelist = new Mixpanelist(config);			
 	
 // commander setup
@@ -20,25 +22,48 @@
 	  .option('-j, --json', 'JSON export')
 	  .option('-f, --filename <name>', 'Override filename')
 	  .option('-e, --export <export>', 'Export folder', 'export')
+	  .option('-p, --prop <prop>', 'Property to filter', 'prop')	  
 	
 	program
 	  .command('*')
-	  .action(function(env){
-	  	// validate argument
-	  	if (validator.validate(env)) export_profiles_by_email(env);
-	    else {
-	    	console.log ("Please supply a valid email address!");
+	  .action(function(arg){
+
+	  	// if email
+	  	if (is_email(arg)) export_profiles("$email", arg);
+	  	
+	  	// if state
+	  	else if (is_state(arg)) export_profiles("$state", arg.toUpperCase());
+	  	
+	  	// prop mode
+	    else if (program.prop) export_profiles(program.prop, arg);
+	    
+	    // error
+		else {    	    
+	    	console.log ("Please supply an email address or a state!");
 			program.outputHelp();	    	
 	    }
+	    
 	});
 	
 	program.parse(process.argv);
+	
+	    
+	    function is_email(arg) {
+			if (email_validator.validate(arg)) return true;
+			else return false;
+	    }
+	    
+	    function is_state(arg) {
+	    	var state = arg.toUpperCase();
+	    	if (state in states) return true;
+	    	else return false;
+	    }	
 
 // export
 
-	function export_profiles_by_email(email) {
+	function export_profiles(prop_name, prop_val) {
 	
-		get_profiles("$email", email, function(results) {
+		get_profiles(prop_name, prop_val, function(results) {
 								 	
 	 		// build flat profile list
 	 	
@@ -50,9 +75,9 @@
 			 	profiles.push(profile);				 		
 		 	});				 	
 				 					
-			console.log(profiles);
+			console.log(profiles.length + " profiles found!");
 		
-			easy_export(email, profiles);
+			easy_export(prop_val, profiles);
 		
 		});	
 		
