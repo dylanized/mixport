@@ -43,10 +43,7 @@
 			program.outputHelp();	    	
 	    }
 	    
-	});
-	
-	program.parse(process.argv);
-	
+	    // conditional helpers
 	    
 	    function is_email(arg) {
 			if (email_validator.validate(arg)) return true;
@@ -57,7 +54,11 @@
 	    	var state = arg.toUpperCase();
 	    	if (state in states) return true;
 	    	else return false;
-	    }	
+	    }		    
+	    
+	});
+	
+	program.parse(process.argv);
 
 // export
 
