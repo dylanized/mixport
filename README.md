@@ -1,6 +1,8 @@
 # Mixport
 
-A command line tool for exporting Mixpanel profile data
+A command line tool for exporting Mixpanel profile data.
+
+You can filter by an email address, a state abbreviation, or specify another property.
 
 ## Basic Use
 
@@ -8,7 +10,7 @@ Export events data in CSV format:
 
 `node mixport.js someperson@somedomain.com`
 
-By default, the output file will be at: exports/someperson.csv
+By default, the output file will be at: exports/someperson@somedomain.com.csv
 
 ## Additional Options
 
@@ -18,11 +20,17 @@ By default, the output file will be at: exports/someperson.csv
 
 `-e` change the exports folder
 
-Example: 
+`-p` set property to filter by
 
-`node mixport.js someperson@somedomain.com -j -f newfilename -e newfolder`
+More Examples: 
 
-will export a file at: newfolder/newfilename.json
+`node mixport.js MO -e states`
+
+exports: states/MO.csv
+
+`node mixport.js 63118 -p zip -j`
+
+exports: exports/63118.json
 
 ## Getting Started
 
