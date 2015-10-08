@@ -32,7 +32,7 @@
 	  	if (is_email(arg)) export_profiles("$email", arg);
 	  	
 	  	// if state
-	  	else if (is_state(arg)) export_profiles("$state", arg.toUpperCase());
+	  	else if (get_state(arg)) export_profiles("$region", get_state(arg), arg.toUpperCase());
 	  		  	
 	  	// prop mode
 	    else if (program.prop) export_profiles(program.prop, arg);
@@ -50,9 +50,9 @@
 			else return false;
 	    }
 	    
-	    function is_state(arg) {
+	    function get_state(arg) {
 	    	var state = arg.toUpperCase();
-	    	if (state in states) return true;
+	    	if (state in states) return states[state];
 	    	else return false;
 	    }    
 	    
@@ -62,7 +62,7 @@
 
 // export
 
-	function export_profiles(prop_name, prop_val) {
+	function export_profiles(prop_name, prop_val, filename) {
 	
 		get_profiles(prop_name, prop_val, function(results) {
 								 	
@@ -77,18 +77,22 @@
 		 	});				 	
 				 					
 			console.log(profiles.length + " profiles found!");
+			
+			if (typeof filename == 'undefined') filename = prop_val;
 		
-			easy_export(prop_val, profiles);
+			easy_export(filename, profiles);
 		
 		});	
 		
 	}
-		
+	
 	function get_profiles(prop_name, prop_val, cb) {
 	
 		console.log("Grabbing profile data where " + prop_name + " = " + prop_val);
 		
 		var query = 'properties["' + prop_name + '"]=="' + prop_val + '"';
+		
+		console.log(query);
 		
 		mixpanelist.get('/engage', { where: query }, function (err, res) {
 		
@@ -103,12 +107,15 @@
 			
 			else console.log(err);
 		  
-		});	
+		});
 	
 	}	
 	
 	function easy_export(name, results) {
 	
+		// remove spaces from filename
+		name = name.replace(/\s+/g, '');
+
 		// build name and path
 		var ext;
 		if (program.json) ext = ".json";
