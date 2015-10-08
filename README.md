@@ -39,6 +39,15 @@ exports: exports/Ontario.json
 - Change filename name to config.json
 - Now you can begin using it as shown above.
 
+## Credits
+
+Thanks to:
+
+- Mixpanelist - https://www.npmjs.com/package/mixpanelist
+- Mixpanel - http://mixpanel.com
+- states.json by @mshafrir - https://gist.github.com/mshafrir/2646763
+- Revolution Messaging - http://revolutionmessaging.com
+
 
 
 
