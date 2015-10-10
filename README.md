@@ -6,9 +6,13 @@ You can filter by an email address, a state abbreviation, a zip code, or specify
 
 ## Basic Use
 
-Export events data in CSV format:
+Export a single profile in CSV format:
 
 `node mixport.js someperson@somedomain.com`
+
+Export all profiles from Missouri in JSON format:
+
+`node mixport.js MO -j`
 
 By default, the output file will be at: exports/someperson@somedomain.com.csv
 
@@ -24,13 +28,9 @@ By default, the output file will be at: exports/someperson@somedomain.com.csv
 
 More Examples: 
 
-`node mixport.js MO -e states`
+`node mixport.js -p '$city' 'Saint Louis' -e cities -j`
 
-exports: states/MO.csv
-
-`node mixport.js -p '$city' 'Saint Louis' -j`
-
-exports: exports/SaintLouis.json
+exports: cities/SaintLouis.json
 
 
 ## Getting Started
