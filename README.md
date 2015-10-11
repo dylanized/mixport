@@ -32,7 +32,6 @@ More Examples:
 
 exports: cities/SaintLouis.json
 
-
 ## Getting Started
 
 - Open config.sample.json, fill out the fields
