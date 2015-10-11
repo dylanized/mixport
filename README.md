@@ -2,7 +2,7 @@
 
 A command line tool for exporting Mixpanel profile data.
 
-You can filter by an email address, a state abbreviation, a zip code, or specify another property.
+You can filter by an email address, a state abbreviation, or specify any other property.
 
 ## Basic Use
 
