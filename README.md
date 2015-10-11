@@ -18,17 +18,17 @@ By default, the output file will be at: exports/someperson@somedomain.com.csv
 
 ## Additional Options
 
+`-p` property to filter by
+
 `-j` json format
 
-`-f` change the filename
+`-o` override the output folder
 
-`-e` change the exports folder
-
-`-p` set property to filter by
+`-f` override the output filename
 
 More Examples: 
 
-`node mixport.js -p '$city' 'Saint Louis' -e cities -j`
+`node mixport.js -p '$city' 'Saint Louis' -o cities -j`
 
 exports: cities/SaintLouis.json
 

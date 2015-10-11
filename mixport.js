@@ -19,14 +19,12 @@
 // commander setup
 
 	program
-	  .version('0.0.1')
+	  .option('-p, --prop <prop>', 'Property to filter by', 'prop')	  
 	  .option('-j, --json', 'JSON export')
-	  .option('-f, --filename <name>', 'Override filename')
-	  .option('-e, --exports <export>', 'Exports folder', 'exports')
-	  .option('-p, --prop <prop>', 'Property to filter', 'prop')	  
+	  .option('-o, --output <export>', 'Override output folder', 'exports')
+	  .option('-f, --filename <name>', 'Override output filename')
 	
 	program
-	  .command('*')
 	  .action(function(arg){
 
 	  	// if email
@@ -36,15 +34,16 @@
 	  	else if (get_state(arg)) export_profiles("$region", get_state(arg), arg);
 	  		  	
 	  	// prop mode
-	    else if (program.prop) export_profiles(program.prop, arg);
+	    else if (program.prop != "prop") export_profiles(program.prop, arg);
 	    
 	    // error
-		else {    	    
-	    	console.log ("Please supply an email address or a state!");
+		else { 
+			console.log('');   	    
+	    	console.log("  Please supply an email address or a state!");    	
 			program.outputHelp();	    	
 	    }
-	    
-	    // conditional helpers
+		
+	    // helpers
 	    
 	    function is_email(arg) {
 			if (email_validator.validate(arg)) return true;
@@ -58,11 +57,23 @@
 	    	// else if spelled out
 	    	else if ((_.invert(states))[arg]) return arg; 
 	    	else return false;
-	    }    
-	    
+	    }       
+			    	    
 	});
 	
+	program.on('--help', function(){
+	  console.log('  Examples:');
+	  console.log('');
+	  console.log('    node mixport.js someperson@somedomain.com');
+	  console.log('    node mixport.js AK -j');
+	  console.log("    node mixport.js -p '$city' 'Saint Louis' -o cities -j");
+	  console.log('');
+	});	
+	
 	program.parse(process.argv);
+		    
+    // if no arg
+	if (!process.argv.slice(2).length) program.outputHelp();
 
 // export
 
@@ -128,11 +139,13 @@
 						get_profiles();
 						
 					}
-					// else we are all done
-					else {
+					// else export the results
+					else if (results && results.length > 0) {
 						console.log("%s profiles found", all_results.length);
 						easy_export(filename, all_results);							
-					}									
+					}
+					// else no results
+					else console.log("No profiles found!");									
 				
 				}
 			  
@@ -155,12 +168,12 @@
 		if (program.filename) filename = program.filename + ext;
 		else filename = name + ext;
 		
-		var filepath = program.exports + "/" + filename;	
+		var filepath = program.output + "/" + filename;	
 		
 		console.log("Exporting %s", filepath);
 				
 		// create export folder if it doesn't exist
-		if (!fs.existsSync(program.exports)) fs.mkdirSync(program.exports);
+		if (!fs.existsSync(program.output)) fs.mkdirSync(program.output);
 		
 		// delete file if it already exists
 		if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
