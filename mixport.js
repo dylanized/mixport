@@ -119,12 +119,8 @@
 					if (results && results.length > 0) {
 						// flatten results
 					 	results.forEach(function(e) {
-					 		console.log(e);
-					 		console.log('');
-					 		var profile = _.flatten(e);
-					 		console.log(profile);
-					 		//e["$properties"];
-					 		//profile["$distinct_id"] = e["$distinct_id"];
+					 		var profile = e["$properties"];
+					 		profile["$distinct_id"] = e["$distinct_id"];
 					 		// add to collection
 						 	all_results.push(profile);				 		
 					 	});				 	
