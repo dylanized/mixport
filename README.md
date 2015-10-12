@@ -34,9 +34,11 @@ exports: cities/SaintLouis.json
 
 ## Getting Started
 
-- Open config.sample.json, fill out the fields
-- Change filename name to config.json
-- Now you can begin using it as shown above.
+Put your mixpanel api key & secret in ~/.bash_rc or ~/.zshrc:
+
+        #### Mixpanel
+        export MIXPANEL_KEY="{put key here}"
+        export MIXPANEL_SECRET="{put key secret}"
 
 ## Credits
 
