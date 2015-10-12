@@ -11,15 +11,18 @@
 		_ = require('underscore'),
 		Mixpanelist = require('mixpanelist');
 		
-	var config = require('../config.json'),	
+	var config = {
+		"key": process.env.MIXPANEL_KEY,
+		"secret": process.env.MIXPANEL_SECRET
+	},
 		states = require('../states.json');
 		
-	var mixpanelist = new Mixpanelist(config);			
+	var mixpanelist = new Mixpanelist(config);
 	
 // commander setup
 
 	program
-	  .option('-p, --prop <prop>', 'Property to filter by', 'prop')	  
+	  .option('-p, --prop <prop>', 'Property to filter by', 'prop')
 	  .option('-j, --json', 'JSON export')
 	  .option('-o, --output <export>', 'Override output folder', 'exports')
 	  .option('-f, --filename <name>', 'Override output filename')
@@ -38,27 +41,27 @@
 	    
 	    // error
 		else { 
-			console.log('');   	    
-	    	console.log("  Please supply an email address or a state!");    	
-			program.outputHelp();	    	
-	    }
+			console.log('');
+			console.log("  Please supply an email address or a state!");
+			program.outputHelp();
+		}
 		
-	    // helpers
-	    
-	    function is_email(arg) {
+		// helpers
+
+		function is_email(arg) {
 			if (email_validator.validate(arg)) return true;
 			else return false;
-	    }
-	    
-	    function get_state(arg) {
-	    	var state = arg.toUpperCase();
-	    	// if abbreviation
-	    	if (state in states) return states[state];
-	    	// else if spelled out
-	    	else if ((_.invert(states))[arg]) return arg; 
-	    	else return false;
-	    }       
-			    	    
+		}
+
+		function get_state(arg) {
+			var state = arg.toUpperCase();
+			// if abbreviation
+			if (state in states) return states[state];
+			// else if spelled out
+			else if ((_.invert(states))[arg]) return arg;
+			else return false;
+		}
+
 	});
 	
 	program.on('--help', function(){
@@ -112,7 +115,7 @@
 				else if (res.error) console.log(res.error);
 				else {
 				
-					// result handler				
+					// result handler
 					var results = res.results;
 			
 					// if profiles got returned
@@ -122,10 +125,11 @@
 					 		var profile = e["$properties"];
 					 		profile["$distinct_id"] = e["$distinct_id"];
 					 		// add to collection
-						 	all_results.push(profile);				 		
-					 	});				 	
+						 	all_results.push(profile);
+						});
 
-						if (page == 0 ) console.log("Getting profiles...");																	else console.log("Getting profiles... (page %s)", page + 1);						
+						if (page == 0 ) console.log("Getting profiles...");
+						else console.log("Getting profiles... (page %s)", page + 1);
 					}
 					
 					// if there might be more results
