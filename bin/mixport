@@ -11,8 +11,8 @@
 		_ = require('underscore'),
 		Mixpanelist = require('mixpanelist');
 		
-	var config = require('./config.json'),	
-		states = require('./states.json');
+	var config = require('../config.json'),	
+		states = require('../states.json');
 		
 	var mixpanelist = new Mixpanelist(config);			
 	
