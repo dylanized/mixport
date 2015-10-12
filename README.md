@@ -34,7 +34,7 @@ exports: cities/SaintLouis.json
 
 ## Getting Started
 
-Put your mixpanel api key & secret in ~/.bash_rc or ~/.zshrc:
+Put your Mixpanel API key & secret in ~/.bash_rc or ~/.zshrc:
 
         #### Mixpanel
         export MIXPANEL_KEY="{put key here}"
