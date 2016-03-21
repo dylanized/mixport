@@ -8,13 +8,15 @@ You can filter by an email address, a state abbreviation, or specify any other p
 
 Export a single profile in CSV format:
 
-`node mixport.js someperson@somedomain.com`
+`mixport someperson@somedomain.com`
 
 Export all profiles from Missouri in JSON format:
 
-`node mixport.js MO -j`
+`mixport MO -j`
 
-By default, the output file will be at: exports/someperson@somedomain.com.csv
+By default, the output file will be at: `exports/{prop_val}.csv`
+
+So, exporting for "MO" would create `export/MO.csv`.
 
 ## Additional Options
 

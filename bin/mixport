@@ -29,7 +29,6 @@
 	
 	program
 	  .action(function(arg){
-
 	  	// if email
 	  	if (is_email(arg)) export_profiles("$email", arg);
 	  	
@@ -38,13 +37,6 @@
 	  		  	
 	  	// prop mode
 	    else if (program.prop != "prop") export_profiles(program.prop, arg);
-	    
-	    // error
-		else { 
-			console.log('');
-			console.log("  Please supply an email address or a state!");
-			program.outputHelp();
-		}
 		
 		// helpers
 
@@ -76,18 +68,21 @@
 	program.parse(process.argv);
 		    
     // if no arg
-	if (!process.argv.slice(2).length) program.outputHelp();
+    // if (!process.argv.slice(2).length) program.outputHelp();
+	if (!process.argv.slice(2).length) export_profiles();
 
-// export
-
+    // export
 	function export_profiles(prop_name, prop_val, filename) {
 	
-		console.log("Querying " + prop_name + " = " + prop_val);
-
 		// set globals
-		var query = 'properties["' + prop_name + '"]=="' + prop_val + '"';
-		if (typeof filename == 'undefined') filename = prop_val;
+        if(typeof(prop_name)!=='undefined') {
+            console.log("Querying " + prop_name + " = " + prop_val);
+            var query = 'properties["' + prop_name + '"]=="' + prop_val + '"';
+            if (typeof filename == 'undefined') filename = prop_val;
+        }
 		
+        if (typeof filename == 'undefined') filename = 'all';
+        
 		var page = 0;
 		var total = 0;
 		var session_id = false;
@@ -99,10 +94,14 @@
 		// functions
 
 		function get_profiles() {
-		
-			var params = {
-				where: query
-			};
+		                
+            if(typeof(query)!=='undefined') {
+    			var params = {
+    				where: query
+    			};
+            } else {
+                var params = {};
+            }
 			
 			if (session_id) {
 				params.page = page;
@@ -207,7 +206,3 @@
 		});				
 		
 	}
- 
-
- 
-	
